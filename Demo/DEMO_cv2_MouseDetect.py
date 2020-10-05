@@ -22,7 +22,7 @@ def auto_canny(image, sigma=0.33):
 
 
 def show_video_file(video_path):
-    # cap_path = "D:\\Download\\ymaze-pmq\\14# 00_00_03.20-00_08_03.20.avi"
+    
     cap = cv2.VideoCapture(video_path)
 
     while cap.isOpened():
@@ -54,7 +54,7 @@ def draw_line__polar_coord(image, rho, theta, thickness=0):
 
     if thickness != 0:
         cv2.line(image, (x1, y1), (x2, y2), color=(0, 0, 255), thickness=thickness)
-    # dis_norm = rho * (np.pi / line_len)
+    
     return x1, y1, x2, y2
 
 
@@ -88,7 +88,7 @@ def hex_str_to_rgb_tuple(hex_str):
 
 
 def draw_3area(img, the_3lines, mid_point, width, length):
-    # sort lines according theta
+    
     the_3thetas_sort = the_3lines[:, 1].argsort()
     the_3lines = the_3lines[the_3thetas_sort]
 
@@ -122,7 +122,7 @@ def draw_3area(img, the_3lines, mid_point, width, length):
     return mask_out, mask3_out
 
 
-"""methods"""
+"""METHODS"""
 
 
 def convert_mask3_to_alpha(mask3):
@@ -183,12 +183,11 @@ def find_mouse__cnt_pnt(img, mask, ):
     mask_img = mask_img.astype(np.uint8)
     mask_img = cv2.blur(mask_img, (5, 5))
     thresh = 255 - cv2.threshold(mask_img, 96, 255, cv2.THRESH_BINARY)[1]
-    # thresh = cv2.adaptiveThreshold(mask_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    # thresh = np.repeat(thresh[:, :, np.newaxis], axis=2, repeats=3)
+   
 
     tmp = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours, hierarchy = tmp[-2:]
-    # thresh, contours, hierarchy = tmp
+    
 
     longest_len = 0
     longest_cnt = None
@@ -206,17 +205,17 @@ def find_mouse__cnt_pnt(img, mask, ):
 def where_is_the_mouse(mask3, pnt):
     y, x = pnt
     where_list = [*mask3[:, x, y], 1]
-    # print(where_list)
+    
 
     if sum(where_list) > 2:
         area_id = 3  # 3 means in middle area
     else:
         area_id = where_list.index(1)  # {0， 1， 2} means area_id
-    # 4 means not in interesting area.
+    
     return area_id
 
 
-"""run"""
+"""RUN"""
 
 
 def get_interest_mask(img='./test01.png'):
@@ -367,7 +366,7 @@ def run__pipeline(video_path):
 
     cv2.namedWindow('', cv2.WINDOW_GUI_NORMAL)
 
-    """get the first frame"""
+    """Get The First Frame"""
     is_opened, frame = video_cap.read()
     mask, mask3, width = get_interest_mask(img=frame)
     mask_alpha = convert_mask3_to_alpha(mask3)
